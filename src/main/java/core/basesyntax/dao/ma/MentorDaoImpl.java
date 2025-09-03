@@ -3,8 +3,6 @@ package core.basesyntax.dao.ma;
 import core.basesyntax.exception.DataProcessingException;
 import core.basesyntax.model.ma.Mentor;
 import java.util.List;
-
-import core.basesyntax.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -15,7 +13,7 @@ public class MentorDaoImpl extends PersonDaoImpl implements MentorDao {
 
     @Override
     public List<Mentor> findByAgeGreaterThan(int age) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = this.sessionFactory.openSession()) {
             return session.createQuery("FROM Mentor m WHERE m.age > :age", Mentor.class)
                     .setParameter("age", age)
                     .getResultList();

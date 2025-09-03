@@ -1,6 +1,5 @@
 package core.basesyntax.model.ma;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -4,9 +4,6 @@ import core.basesyntax.dao.AbstractDao;
 import core.basesyntax.exception.DataProcessingException;
 import core.basesyntax.model.figure.Figure;
 import java.util.List;
-
-import core.basesyntax.model.zoo.Animal;
-import core.basesyntax.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,7 +19,7 @@ public class FigureDaoImpl<T extends Figure> extends AbstractDao implements Figu
         Transaction transaction = null;
 
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
 
             session.persist(figure);
@@ -43,16 +40,15 @@ public class FigureDaoImpl<T extends Figure> extends AbstractDao implements Figu
 
     @Override
     public List<T> findByColor(String color, Class<T> clazz) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = this.sessionFactory.openSession()) {
             return session.createQuery(
                             "FROM " + clazz.getSimpleName() + " f WHERE f.color = :color", clazz)
                     .setParameter("color", color)
                     .getResultList();
         } catch (Exception e) {
             throw new DataProcessingException(
-                    "Can't get entities of type " + clazz.getSimpleName() + " with color: " + color, e);
+                    "Can't get entities of type "
+                            + clazz.getSimpleName() + " with color: " + color, e);
         }
     }
-
-
 }

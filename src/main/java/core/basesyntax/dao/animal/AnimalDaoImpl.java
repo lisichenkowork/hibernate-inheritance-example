@@ -4,8 +4,6 @@ import core.basesyntax.dao.AbstractDao;
 import core.basesyntax.exception.DataProcessingException;
 import core.basesyntax.model.zoo.Animal;
 import java.util.List;
-
-import core.basesyntax.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,7 +19,7 @@ public class AnimalDaoImpl extends AbstractDao implements AnimalDao {
         Transaction transaction = null;
 
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
 
             session.persist(animal);
@@ -42,10 +40,12 @@ public class AnimalDaoImpl extends AbstractDao implements AnimalDao {
 
     @Override
     public List<Animal> findByNameFirstLetter(Character character) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Animal where name like :name", Animal.class)
-                    .setParameter("name", character + "%")
+        try (Session session = this.sessionFactory.openSession()) {
+            return session.createQuery(
+                            "from Animal where lower(name) like :name", Animal.class)
+                    .setParameter("name", (character.toString().toLowerCase() + "%"))
                     .getResultList();
         }
     }
+
 }

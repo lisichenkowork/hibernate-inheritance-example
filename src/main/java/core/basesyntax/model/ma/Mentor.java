@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 @Table(name = "mentors")
 public class Mentor extends Person {
 
-    private int age;
     private String specialization;
 
     public Mentor() {
@@ -16,16 +15,6 @@ public class Mentor extends Person {
     public Mentor(int age, String name, String specialization) {
         super(age, name);
         this.specialization = specialization;
-    }
-
-    @Override
-    public int getAge() {
-        return age;
-    }
-
-    @Override
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getSpecialization() {
